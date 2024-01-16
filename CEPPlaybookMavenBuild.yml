@@ -1,0 +1,21 @@
+- hosts: demo
+  become: true
+  tasks:
+  - name: Install git, maven 
+    package: name={{item}} state=present
+    loop:
+     - git
+     - maven
+     - docker
+  - name: Clone the code on the worker nodes from github
+    git: repo=https://github.com/irkartik/MavenTestCode.git dest=/tmp/kartik
+  - name: Execute maven command to build the code
+    command: chdir=/tmp/kartik mvn package   # /tmp/kartik/target/addressbook.war
+
+  - name: Start the docker service
+    service: name=docker state=started
+  - name: change the directory to /tmp/kartik/ and then  Build the dockerfile
+    command: chdir=/tmp/kartik docker build -t mycepimage01 .
+  - name: Runt he Image to deploy app on the container
+    command: docker run -d -p 8080:8080 mycepimage01
+    
