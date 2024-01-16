@@ -15,9 +15,6 @@
   - name: Start the docker service
     service: name=docker state=started
 
-  - name : Stop all running containers
-    command : docker stop $(docker ps -a -q)
-
   - name: change the directory to /tmp/kartik/ and then  Build the dockerfile
     command: chdir=/tmp/kartik docker build -t mycepimage01 .
   - name: Runt he Image to deploy app on the container
