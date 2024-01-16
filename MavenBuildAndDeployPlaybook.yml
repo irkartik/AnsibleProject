@@ -19,4 +19,7 @@
     command: chdir=/tmp/kartik docker build -t mycepimage01 .
   - name: Runt he Image to deploy app on the container
     command: docker run -d -p 8080:8080 mycepimage01
+
+  - name : Restart the web container 
+    command : docker restart mycepimage01
     
